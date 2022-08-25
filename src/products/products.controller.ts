@@ -1,6 +1,4 @@
 import { Controller, Post, Body, Get, Param, Delete, Put } from "@nestjs/common";
-import { get } from "http";
-import { userInfo } from "os";
 
 import { ProductService } from "./products.service";
 @Controller('products')
@@ -16,8 +14,8 @@ export class ProductController {
 
     @Put(':id')
     editProduct
-    (@Param('id') prodId: string, @Body('title') prodTitle: string, @Body('description') prodDesc: string, @Body('price') prodPrice: number ){
-        return this.productService.editProduct(prodId, prodTitle, prodDesc, prodPrice);
+    (@Param('id') prodId: string, @Body('title') prodTitle: string, @Body('description') prodDesc: string, @Body('price') prodPrice: number, @Body('user') userinfo: string ){
+        return this.productService.editProduct(prodId, prodTitle, prodDesc, prodPrice, userinfo);
     }
 
     @Get(':id')

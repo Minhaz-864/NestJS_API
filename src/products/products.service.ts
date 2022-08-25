@@ -6,7 +6,6 @@ import { Product } from "./products.model";
 
 @Injectable()
 export class ProductService {
-    private products: Product[] = [];
 
     constructor(@InjectModel('Product') private readonly productModel : Model<Product> ){}
 
@@ -22,45 +21,50 @@ export class ProductService {
     }
 
     async getSingle(prodID: string) {
-        console.log(prodID)
-        return await this.productModel.findOne({_id:prodID})
+        try {
+            
+            const product = await this.productModel.findOne({_id:prodID});
+            if(product){
+    
+                return product; 
+            }
+        } catch (error) {
+            
+            throw new NotAcceptableException("Product Lost ;-;")
+        }
     }
 
     async deleteOne(prodId: string) {
-        
-        const deleteInfo = await this.productModel.deleteOne({_id: prodId})
-        
-        if(deleteInfo.deletedCount > 0){
-
-            return { message: "successfully deleted" }
+        try {
+            const deleteInfo = await this.productModel.deleteOne({_id: prodId})
+            
+            if(deleteInfo.deletedCount > 0){
+    
+                return { message: "successfully deleted" }
+            }
+            
+        } catch (error) {
+            
+            throw new NotAcceptableException("Delete Stopped Abruptly") 
         }
-        throw new NotAcceptableException("Delete Stopped Abruptly") 
         
     }
 
-    editProduct(prodId: string, title: string, desc: string, price: number) {
-      
-        // const editableProduct = this.productModel.findOneAndUpdate;
-        // title ? editableProduct.title = title : editableProduct.title = editableProduct.title
-        // desc ? editableProduct.description = desc : editableProduct.description = editableProduct.description
-        // price ? editableProduct.price = price : editableProduct.price = editableProduct.price
+    async editProduct(prodId: string, title: string, desc: string, price: number, user: string) {
+        
+        const updateable = {
+            title: title,
+            description: desc,
+            price: price,
+            updated_at: Date()
+        }
 
-     
+        const data = await this.productModel.findByIdAndUpdate(prodId, { $set: updateable})
+        console.log(data);
 
 
         return {message: "Successful update!"}
 
-    }
-
-    private findProduct(Id: string)
-        : [{}, number] {
-        const prodIndex = this.products.findIndex((prod) => prod.id === Id)
-        const singleProduct = this.products[prodIndex]
-        if (!singleProduct) {
-            throw new NotFoundException('Nope! this is wrong.')
-        }
-
-        return [singleProduct, prodIndex];
     }
 
 }
