@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, NotAcceptableException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { getValue } from "src/middlewares/functional.middleware";
 
 import { Product } from "./products.model";
 
@@ -17,6 +18,8 @@ export class ProductService {
     }
 
     async getProducts() {
+        const value  = getValue();
+        console.log(value);
         return await this.productModel.find().exec();
     }
 
