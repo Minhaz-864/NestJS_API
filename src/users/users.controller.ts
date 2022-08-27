@@ -1,5 +1,9 @@
-import { Body, Controller, NotAcceptableException, Post } from '@nestjs/common';
-import { loginDTO, checkRegistration } from 'src/DTO/dtoCheck.dto';
+import { Body, Controller, Post } from '@nestjs/common';
+import {
+  checkRegistration,
+  loginDTO,
+  productListDTO,
+} from 'src/DTO/dtoCheck.dto';
 import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
@@ -14,7 +18,7 @@ export class UsersController {
     // @Body('password') password: string,
     // @Body('password_confirm') password_confirm: string,
 
-    @Body() dto: checkRegistration
+    @Body() dto: checkRegistration,
   ): {} {
     // if (password_confirm == password) {
     //   return this.userService.create(
@@ -31,14 +35,12 @@ export class UsersController {
   }
 
   @Post('login')
-  Login(@Body() dto: loginDTO):{}{
+  Login(@Body() dto: loginDTO): {} {
     return this.userService.login(dto);
   }
 
   @Post('products')
-  yourProducts(@Body() productDTO: productListDTO): {}{
-
-    
+  yourProducts(@Body() productDTO: productListDTO): {} {
+    return this.userService.products(productDTO);
   }
-
 }

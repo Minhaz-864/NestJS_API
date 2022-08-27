@@ -1,22 +1,30 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { validateLoginmiddlware } from 'src/middlewares/validateLogin.middleware';
 import { validateOthermiddlware } from 'src/middlewares/validateOther.middle';
+import { productSchema } from 'src/products/products.model';
 import { UsersController } from './users.controller';
 import { userSchema } from './users.model';
 import { UsersService } from './users.service';
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'User', schema: userSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: 'User', schema: userSchema }]),
+    MongooseModule.forFeature([{ name: 'Product', schema: productSchema }]),
+  ],
   controllers: [UsersController],
   providers: [UsersService],
 })
-export class UsersModule implements NestModule{
-  configure(consumer: MiddlewareConsumer){
-    consumer.apply( validateLoginmiddlware, validateOthermiddlware )
-    .forRoutes({
+export class UsersModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(validateLoginmiddlware, validateOthermiddlware).forRoutes({
       path: 'users/login',
-      method: RequestMethod.POST
-    })
+      method: RequestMethod.POST,
+    });
     /* we could do this for a whole controller
       .forRoutes(UsersController)
 
@@ -25,5 +33,4 @@ export class UsersModule implements NestModule{
       .forRoutes(UsersController)
     */
   }
-
 }

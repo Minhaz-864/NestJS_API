@@ -1,35 +1,38 @@
-import { IsEmail, IsNotEmpty, IsString, Matches, MinLength } from "class-validator";
-import { Match } from "./match.dacorator";
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { Match } from './match.dacorator';
 
-export class loginDTO{
-    @IsEmail()
-    email: string;
+export class loginDTO {
+  @IsEmail()
+  email: string;
 
-    @IsString()
-    password: string;
+  @IsString()
+  password: string;
 }
 
-export class checkRegistration{
-    @IsString()
-    firstname: string;
+export class checkRegistration {
+  @IsString()
+  firstname: string;
 
-    @IsString()
-    lastname: string;
+  @IsString()
+  lastname: string;
 
-    @IsEmail()
-    email: string;
+  @IsEmail()
+  email: string;
 
-    @IsNotEmpty()
-    phone: string;
+  @IsNotEmpty()
+  phone: string;
 
-    @IsString()
-    @MinLength(6)
-    password: string;
+  @IsString()
+  @MinLength(6)
+  password: string;
 
-    @IsString()
-    @MinLength(6)
-    @Match('password')
-    password_confirm: string;
-    
+  @IsString()
+  @MinLength(6)
+  @Match('password')
+  password_confirm: string;
+}
 
+export class productListDTO {
+  @IsEmail()
+  email: string;
 }
