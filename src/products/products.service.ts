@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, NotAcceptableException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { getValue } from "src/middlewares/functional.middleware";
@@ -8,13 +9,20 @@ import { Product } from "./products.model";
 @Injectable()
 export class ProductService {
 
-    constructor(@InjectModel('Product') private readonly productModel : Model<Product> ){}
+    constructor(@InjectModel('Product') private readonly productModel : Model<Product>, 
+    private jwtService: JwtService ){}
 
-    async insertProduct(title: string, description: string, price: number, user: string)  {
-        const newProduct = new this.productModel({title, description, price, user})
-        await newProduct.save();
-        console.log(newProduct);
-        return newProduct.id;
+    async insertProduct(title: string, description: string, price: number, token: string)  {
+        try {
+            const verify = this.jwtService.verify(token);
+            console.log(verify.user)
+            const newProduct = new this.productModel({title, description, price, user: verify.user.email})
+            await newProduct.save();
+            console.log(newProduct);
+            return newProduct.id;
+        } catch (error) {
+            throw new Error('User Information mismatch');
+        }
     }
 
     async getProducts() {

@@ -6,10 +6,10 @@ export class ProductController {
     constructor(private productService: ProductService) { }
     @Post()
     addProduct
-        (@Body('title') prodTitle: string, @Body('description') prodDesc: string, @Body('price') prodPrice: number, @Body('user') userInfo: string)
+        (@Body('title') prodTitle: string, @Body('description') prodDesc: string, @Body('price') prodPrice: number, @Body('token') token: string)
         : {} {
         
-        return this.productService.insertProduct(prodTitle, prodDesc, prodPrice, userInfo);
+        return this.productService.insertProduct(prodTitle, prodDesc, prodPrice, token);
     }
 
     @Put(':id')

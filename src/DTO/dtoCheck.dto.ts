@@ -35,4 +35,6 @@ export class checkRegistration {
 export class productListDTO {
   @IsEmail()
   email: string;
+  @IsString()
+  token: string;
 }

@@ -4,6 +4,7 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { validateLoginmiddlware } from 'src/middlewares/validateLogin.middleware';
 import { validateOthermiddlware } from 'src/middlewares/validateOther.middle';
@@ -11,10 +12,12 @@ import { productSchema } from 'src/products/products.model';
 import { UsersController } from './users.controller';
 import { userSchema } from './users.model';
 import { UsersService } from './users.service';
+
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'User', schema: userSchema }]),
     MongooseModule.forFeature([{ name: 'Product', schema: productSchema }]),
+    JwtModule.register({ secret: "AgIvEnSeCrEt"})
   ],
   controllers: [UsersController],
   providers: [UsersService],
