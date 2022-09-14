@@ -63,15 +63,15 @@ export class UsersService {
     const isMatch = await bcrypt.compare(password, user.password);
     console.log(isMatch)
     if (isMatch) {
-      await this.userModel.findByIdAndUpdate(user.id, {
-        $set: { last_log: Date() },
-      });
       user.password = null;
       const payload = {
         user: user
       }
       const token = this.jwtService.sign(payload, { expiresIn: "24h" })
       console.log(token);
+      await this.userModel.findByIdAndUpdate(user.id, {
+        $set: { last_log: Date(), token: token },
+      });
 
       return { message: 'login success', token: token };
     }

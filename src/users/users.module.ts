@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
-import { validateLoginmiddlware } from 'src/middlewares/validateLogin.middleware';
+//import { validateLoginmiddlware } from 'src/middlewares/validateLogin.middleware';
 import { validateOthermiddlware } from 'src/middlewares/validateOther.middle';
 import { productSchema } from 'src/products/products.model';
 import { UsersController } from './users.controller';
@@ -24,7 +24,7 @@ import { UsersService } from './users.service';
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(validateLoginmiddlware, validateOthermiddlware).forRoutes({
+    consumer.apply( validateOthermiddlware ).forRoutes({
       path: 'users/login',
       method: RequestMethod.POST,
     });
